@@ -248,7 +248,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/12/ES6/" itemprop="url">ES6</a></h1>
+                <a class="post-title-link" href="/2019/07/12/ES6/" itemprop="url">Untitled</a></h1>
         
 
         <div class="post-meta">
@@ -300,10 +300,74 @@
       
         
           
-            <h2 id="定义变量"><a href="#定义变量" class="headerlink" title="定义变量"></a>定义变量</h2><p>之前的 var 作用域是全局,在函数内时是局部.</p>
-<h3 id="let"><a href="#let" class="headerlink" title="let :"></a>let :</h3><p>没有预解析,也就是没有变量提升;<br>在代码块内,只要let定义变量,在定义前使用都会报错,所以必须先定义再使用<br>不能重复定义,但可以赋值(在同一作用域内)<br>for 循环中,循环体中是父级作用域,循环里又是一个作用域</p>
-<h3 id="const"><a href="#const" class="headerlink" title="const:"></a>const:</h3><p>const 定义变量不能修改<br>const 定义完变量必须有值,不能后赋值</p>
+            <h2 id="一-定义变量"><a href="#一-定义变量" class="headerlink" title="一.定义变量"></a>一.定义变量</h2><p>之前的 var 作用域是全局,在函数内时是局部.</p>
+<h3 id="1-let"><a href="#1-let" class="headerlink" title="1.let :"></a>1.let :</h3><p>没有预解析,也就是没有变量提升;<br>在代码块内,只要let定义变量,在定义前使用都会报错,所以必须先定义再使用<br>不能重复定义,但可以赋值(在同一作用域内)<br>for 循环中,循环体中是父级作用域,循环里又是一个作用域</p>
+<h3 id="2-const"><a href="#2-const" class="headerlink" title="2.const:"></a>2.const:</h3><p>const 定义变量不能修改<br>const 定义完变量必须有值,不能后赋值</p>
+<h2 id="二-解构赋值"><a href="#二-解构赋值" class="headerlink" title="二.解构赋值"></a>二.解构赋值</h2><pre><code>let[a,b,c]=[12,5,6];
+console.log(a,b,c);// 12,5,6左右两边,结构格式要保持一致
+json:  let {name,age,job}={
+    name:&apos;bob&apos;,
+    age:18,
+    job:&apos;学生&apos;
+};</code></pre><h2 id="三-字符串模板"><a href="#三-字符串模板" class="headerlink" title="三.字符串模板"></a>三.字符串模板</h2><pre><code>let name=&apos;bob&apos;;
+let age=18;
+let str=`这个人叫`${name},年龄是${age}岁`;
 
+`${变量名}`</code></pre><h3 id="2-字符串操作"><a href="#2-字符串操作" class="headerlink" title="2.字符串操作:"></a>2.字符串操作:</h3><p>str.startsWith():以()开始;</p>
+<p>str.endsWith();以()结束;</p>
+<p>str.repeat(次数);重复字符串;</p>
+<p>str.padStart();往前填充;</p>
+<p>str.padEnd();往后填充;</p>
+<p>(注:往前填充与往后填充参数都是两个,第一个参数为整个字符串的长度,第二个为填充的内容)</p>
+<h2 id="四-函数"><a href="#四-函数" class="headerlink" title="四.函数"></a>四.函数</h2><h3 id="1-函数默认参数"><a href="#1-函数默认参数" class="headerlink" title="1.函数默认参数"></a>1.函数默认参数</h3><pre><code>function  show(a=&apos;欢迎&apos;,b=&apos;mmm&apos;){
+    console.log(a,b);
+}
+show(&apos;welcome&apos;,&apos;&apos;)//welcome
+
+//如果函数调用时未定义,就采用默认值</code></pre><h3 id="2-函数参数默认已经定义了-不能再使用let-const声明"><a href="#2-函数参数默认已经定义了-不能再使用let-const声明" class="headerlink" title="2.函数参数默认已经定义了,不能再使用let,const声明"></a>2.函数参数默认已经定义了,不能再使用let,const声明</h3><pre><code>function show(a=18){
+    let a=100;
+    console.log(a);
+}
+show();//报错 a重复定义</code></pre><h2 id="五-扩展运算符"><a href="#五-扩展运算符" class="headerlink" title="五.扩展运算符"></a>五.扩展运算符</h2><p>…可以展开数组,也可以构成数组</p>
+<pre><code>例1:
+let arr=[1,2,3];
+console.log(arr);//[1,2,3]
+
+例2:
+function show(...a){
+    console.log(a);
+}
+show(1,2,3,4,5);//[1,2,3,4,5]
+
+例3:
+function show(a,b,...c){
+    console.log(a,b);//2
+    console.log(c);//[3,4,5]
+}
+show(1,2,3,4,5)</code></pre><h2 id="六-箭头函数"><a href="#六-箭头函数" class="headerlink" title="六.箭头函数"></a>六.箭头函数</h2><h3 id="this指向"><a href="#this指向" class="headerlink" title="this指向"></a>this指向</h3><h5 id="箭头函数本来是没有this的-所以要去外层找this指向-也就是指向定义函数的对象—指向最外层"><a href="#箭头函数本来是没有this的-所以要去外层找this指向-也就是指向定义函数的对象—指向最外层" class="headerlink" title="箭头函数本来是没有this的,所以要去外层找this指向,也就是指向定义函数的对象—指向最外层"></a>箭头函数本来是没有this的,所以要去外层找this指向,也就是指向定义函数的对象—指向最外层</h5><h5 id="箭头函数定义时-如果上一级是对象-则不能形成独立的作用域-所以this这时指向windows-例如"><a href="#箭头函数定义时-如果上一级是对象-则不能形成独立的作用域-所以this这时指向windows-例如" class="headerlink" title="箭头函数定义时,如果上一级是对象,则不能形成独立的作用域,所以this这时指向windows,例如:"></a>箭头函数定义时,如果上一级是对象,则不能形成独立的作用域,所以this这时指向windows,例如:</h5><pre><code> 例1:
+ var obj={
+         pro:{
+         getPro:()=&gt;{
+             console.log(this);
+         }
+     }
+ }
+ obj.pro.getPro();
+
+例2:
+ obj={
+     data:[&apos;aaa&apos;,&apos;bbb&apos;],
+     init:function(){
+         document.onclick=ev=&gt;{
+             alert(this.data) //  [&apos;aaa&apos;,&apos;bbb&apos;] 箭头函数没有this指向,所以指向上一层init:function,在函数外部,init是由obj调用的,所以this指向obj.
+         }
+         //非箭头函数
+         //document.onclick=function (ev){
+             //alert(this.data) // undefined
+        //}
+     }
+ }
+ obj.init()</code></pre>
           
         
       
