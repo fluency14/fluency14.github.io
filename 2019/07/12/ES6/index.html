@@ -86,10 +86,12 @@
 <meta property="og:site_name" content="Fluency&#39;s BLOG">
 <meta property="og:description" content="一.定义变量之前的 var 作用域是全局,在函数内时是局部. 1.let :没有预解析,也就是没有变量提升;在代码块内,只要let定义变量,在定义前使用都会报错,所以必须先定义再使用不能重复定义,但可以赋值(在同一作用域内)for 循环中,循环体中是父级作用域,循环里又是一个作用域 2.const:const 定义变量不能修改const 定义完变量必须有值,不能后赋值 二.解构赋值let[a,b,">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-12T06:46:52.861Z">
+<meta property="og:image" content="http://yoursite.com/images/xunhuan.png">
+<meta property="og:updated_time" content="2019-07-15T01:37:27.601Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ES6">
 <meta name="twitter:description" content="一.定义变量之前的 var 作用域是全局,在函数内时是局部. 1.let :没有预解析,也就是没有变量提升;在代码块内,只要let定义变量,在定义前使用都会报错,所以必须先定义再使用不能重复定义,但可以赋值(在同一作用域内)for 循环中,循环体中是父级作用域,循环里又是一个作用域 2.const:const 定义变量不能修改const 定义完变量必须有值,不能后赋值 二.解构赋值let[a,b,">
+<meta name="twitter:image" content="http://yoursite.com/images/xunhuan.png">
 
 
 
@@ -366,7 +368,112 @@ show(1,2,3,4,5)</code></pre><h2 id="六-箭头函数"><a href="#六-箭头函数
         //}
      }
  }
- obj.init()</code></pre>
+ obj.init()</code></pre><h2 id="七-Promise"><a href="#七-Promise" class="headerlink" title="七. Promise"></a>七. Promise</h2><h5 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h5><p>宏任务有Event Table、Event Queue，微任务有Event Queue</p>
+<p>1.宏任务：包括整体代码script，setTimeout，setInterval；</p>
+<p>2.微任务：Promise，process.nextTick</p>
+<p>注：Promise立即执行，then函数分发到微任务Event Queue，process.nextTick分发到微任务Event Queue</p>
+<p>任务进入执行栈—-同步任务还是异步任务—-同步的进入主线程，异步的进入Event Table并注册函数。当指定的事情完成时，Event Table会将这个函数移入Event Queue。主线程内的任务执行完毕为空，会去Event Queue读取对应的函数，进入主线程执行。上述过程会不断重复，也就是常说的Event Loop(事件循环)。</p>
+<pre><code>setTimeout(function() {
+console.log(&apos;宏任务setTimeout&apos;);  //先遇到setTimeout，将其回调函数注册后分发到宏任务Event Queue
+//如果setTimeout设置时间，那它会先把函数放到宏任务Event Table,等时间到了再放入宏任务Event Queue里面
+})
+new Promise(function(resolve) {
+console.log(&apos;微任务promise&apos;);      //new Promise函数立即执行
+resolve();                        //必须resolve执行才能执行then
+}).then(function() {
+console.log(&apos;微任务then&apos;);            //then函数分发到微任务Event Queue
+})
+console.log(&apos;主线程console&apos;);
+
+//执行顺序结果： 微任务promise、主线程console、微任务then、宏任务setTimeout</code></pre><p>事件循环流程图:<br><img src="/images/xunhuan.png" alt="avatar"></p>
+<hr>
+<p>Promise : 作用是解决异步问题 , 包装异步执行代码,将其转化为同步执行的样式 , 传统的方式是回调和事件驱动 , 有三种状态 : pending 正在请求 , resolved 成功 , rejected 失败.</p>
+<pre><code>语法:
+new Promise(function (resolve,reject){
+    //resolve 成功时调用 , 执行后返回 promise 的成功状态
+    //reject 失败时调用 , 执行后返回 promise 的错误状态
+})
+
+调用时: Promise自带then方法 , 通过 then 方法来获得 resolved 传递的数据 , 与 then 并行的方法是 catch ,用来捕获异常.
+Promise().then(res=&gt;{
+    //成功
+}).catch(err=&gt;{
+    //失败
+})</code></pre><h2 id="八-数组新增特性"><a href="#八-数组新增特性" class="headerlink" title="八. 数组新增特性"></a>八. 数组新增特性</h2><blockquote>
+<p>arr.form()  把类数组(获取一组元素、arguments)对象转成数组,具备length属性.</p>
+</blockquote>
+<blockquote>
+<p>arr.of() 把一组值转为数组</p>
+</blockquote>
+<blockquote>
+<p>arr.find() 找到符合条件的第一个,没找到返回undefined</p>
+</blockquote>
+<blockquote>
+<p>arr.findindex() 找指定位置,没找到返回-1</p>
+</blockquote>
+<blockquote>
+<p>arr.fill(填充的东西,开始位置,结束位置) 填充</p>
+</blockquote>
+<blockquote>
+<p>arr.includes() 判断是否包含某项,返回布尔值</p>
+</blockquote>
+<h2 id="九-对象简洁语法"><a href="#九-对象简洁语法" class="headerlink" title="九. 对象简洁语法"></a>九. 对象简洁语法</h2><p>例如:</p>
+<pre><code>原来:
+let name=&apos;Bob&apos;;
+let age=&apos;18&apos;;
+let json={
+    name:name,
+    age:age,
+    showA:function(){
+        return this.name;
+    }
+}
+
+
+
+简洁:
+let json={
+    name,
+    age,
+    showA(){
+        return this.name;
+    }
+}
+
+注意:不可使用箭头函数,因为会改变this指向.</code></pre><blockquote>
+<p>object.is() 用于比较两个值是否相等,可以检测NaN与NaN,结果为true</p>
+</blockquote>
+<blockquote>
+<p>object.assign() 用于合并对象,新出现的对象会覆盖原先的对象,用途: 复制对象;合并参数.</p>
+</blockquote>
+<h2 id="十-模块化"><a href="#十-模块化" class="headerlink" title="十. 模块化"></a>十. 模块化</h2><p>模块化需要放在服务器环境中,js不支持模块化,ES统一了服务端和客户端模块规范.</p>
+<blockquote>
+<p>定义模块</p>
+</blockquote>
+<pre><code>格式:
+&lt;script type=&quot;module&quot;&gt;
+    import &apos;./modules/1.js&apos;
+    或: 
+    import {} from &apos; &apos;
+&lt;/script&gt;</code></pre><blockquote>
+<p>import 引入其他模块接口.</p>
+</blockquote>
+<p>import 的路径可以是相对,也可以是绝对.</p>
+<p>import 模块无论引入多少次,都只导入一次.</p>
+<p>import 有提升,自动提升到顶部.</p>
+<p>import() 类似node.js里的require,可以动态写入,默认import语法.</p>
+<p>优点: 按需加载,可以写到if中,路径也可以改为动态.</p>
+<p>import的返回值为promise对象.</p>
+<blockquote>
+<p>export 向外提供借口.</p>
+</blockquote>
+<p>export 导出时 import{};</p>
+<p>export default 导出时 import 不需要{}</p>
+<p>导出去的模块内容,如果里面有定时器更改,外面也会改动.</p>
+<blockquote>
+<p>import 和 export 是对向外抛的值的引用,而 commonJS 是对值的拷贝.</p>
+</blockquote>
+<h2 id="十一-类和继承"><a href="#十一-类和继承" class="headerlink" title="十一. 类和继承"></a>十一. 类和继承</h2>
       
     </div>
     
@@ -512,7 +619,7 @@ show(1,2,3,4,5)</code></pre><h2 id="六-箭头函数"><a href="#六-箭头函数
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-定义变量"><span class="nav-number">1.</span> <span class="nav-text">一.定义变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-let"><span class="nav-number">1.1.</span> <span class="nav-text">1.let :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-const"><span class="nav-number">1.2.</span> <span class="nav-text">2.const:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-解构赋值"><span class="nav-number">2.</span> <span class="nav-text">二.解构赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-字符串模板"><span class="nav-number">3.</span> <span class="nav-text">三.字符串模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-字符串操作"><span class="nav-number">3.1.</span> <span class="nav-text">2.字符串操作:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-函数"><span class="nav-number">4.</span> <span class="nav-text">四.函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-函数默认参数"><span class="nav-number">4.1.</span> <span class="nav-text">1.函数默认参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-函数参数默认已经定义了-不能再使用let-const声明"><span class="nav-number">4.2.</span> <span class="nav-text">2.函数参数默认已经定义了,不能再使用let,const声明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-扩展运算符"><span class="nav-number">5.</span> <span class="nav-text">五.扩展运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-箭头函数"><span class="nav-number">6.</span> <span class="nav-text">六.箭头函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#this指向"><span class="nav-number">6.1.</span> <span class="nav-text">this指向</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#箭头函数本来是没有this的-所以要去外层找this指向-也就是指向定义函数的对象—指向最外层"><span class="nav-number">6.1.0.1.</span> <span class="nav-text">箭头函数本来是没有this的,所以要去外层找this指向,也就是指向定义函数的对象—指向最外层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#箭头函数定义时-如果上一级是对象-则不能形成独立的作用域-所以this这时指向windows-例如"><span class="nav-number">6.1.0.2.</span> <span class="nav-text">箭头函数定义时,如果上一级是对象,则不能形成独立的作用域,所以this这时指向windows,例如:</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-定义变量"><span class="nav-number">1.</span> <span class="nav-text">一.定义变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-let"><span class="nav-number">1.1.</span> <span class="nav-text">1.let :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-const"><span class="nav-number">1.2.</span> <span class="nav-text">2.const:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-解构赋值"><span class="nav-number">2.</span> <span class="nav-text">二.解构赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-字符串模板"><span class="nav-number">3.</span> <span class="nav-text">三.字符串模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-字符串操作"><span class="nav-number">3.1.</span> <span class="nav-text">2.字符串操作:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-函数"><span class="nav-number">4.</span> <span class="nav-text">四.函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-函数默认参数"><span class="nav-number">4.1.</span> <span class="nav-text">1.函数默认参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-函数参数默认已经定义了-不能再使用let-const声明"><span class="nav-number">4.2.</span> <span class="nav-text">2.函数参数默认已经定义了,不能再使用let,const声明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-扩展运算符"><span class="nav-number">5.</span> <span class="nav-text">五.扩展运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-箭头函数"><span class="nav-number">6.</span> <span class="nav-text">六.箭头函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#this指向"><span class="nav-number">6.1.</span> <span class="nav-text">this指向</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#箭头函数本来是没有this的-所以要去外层找this指向-也就是指向定义函数的对象—指向最外层"><span class="nav-number">6.1.0.1.</span> <span class="nav-text">箭头函数本来是没有this的,所以要去外层找this指向,也就是指向定义函数的对象—指向最外层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#箭头函数定义时-如果上一级是对象-则不能形成独立的作用域-所以this这时指向windows-例如"><span class="nav-number">6.1.0.2.</span> <span class="nav-text">箭头函数定义时,如果上一级是对象,则不能形成独立的作用域,所以this这时指向windows,例如:</span></a></li></ol></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#七-Promise"><span class="nav-number">7.</span> <span class="nav-text">七. Promise</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#事件循环"><span class="nav-number">7.0.0.1.</span> <span class="nav-text">事件循环</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八-数组新增特性"><span class="nav-number">8.</span> <span class="nav-text">八. 数组新增特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#九-对象简洁语法"><span class="nav-number">9.</span> <span class="nav-text">九. 对象简洁语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#十-模块化"><span class="nav-number">10.</span> <span class="nav-text">十. 模块化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#十一-类和继承"><span class="nav-number">11.</span> <span class="nav-text">十一. 类和继承</span></a></li></div>
             
 
           </div>
