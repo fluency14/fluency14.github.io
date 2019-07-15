@@ -472,7 +472,207 @@ let json={
 <blockquote>
 <p>import 和 export 是对向外抛的值的引用,而 commonJS 是对值的拷贝.</p>
 </blockquote>
+<h2 id="十一-类和继承"><a href="#十一-类和继承" class="headerlink" title="十一. 类和继承"></a>十一. 类和继承</h2><h2 id="十一-类-class-和继承"><a href="#十一-类-class-和继承" class="headerlink" title="十一. 类(class)和继承"></a>十一. 类(class)和继承</h2><pre><code>1.
+class Person(){
+    constructor(name,age){//构造方法(函数),调用new时,自动执行
+        console.log(&apos;构造函数执行了,${name},${name},${age}&apos;);
+    }    
+}
+let p1 = new Person(&apos;name&apos;,18);
 
+2.
+class Person(){
+    constructor(name,age){
+        this.name=name;
+        this.age=age;
+    }
+    showName(){
+        return `名字为:${this.name}`;
+    }
+    showAge(){
+        return `年龄:${this.age}`;
+    }
+}
+let p1 = new Person(&apos;Bob&apos;,18);
+console.log(p1.showName(),p1.showAge());</code></pre><p>ES6中, class 没有提升功能 , 必须先定义后使用.</p>
+<blockquote>
+<p>取值 get    存值 set</p>
+</blockquote>
+<pre><code>class Person(){
+    constructor(){
+
+    }
+    get aaa(){
+        return &apos; &apos;;
+    }
+    set aaa(val){
+        console.log(`设置aaa的属性,值为:${val}`)
+    }
+}
+let p1 = new Person();
+p1.aaa=&apos;123&apos;;
+console.log(p1.aaa);</code></pre><blockquote>
+<p>类的方法:</p>
+</blockquote>
+<p>静态方法:</p>
+<pre><code>class Person(){
+    constructor(){
+
+    }
+    showName(){
+        return &apos;这是showName方法&apos;
+    }
+    static aaa(){
+        return &apos;这是静态方法&apos;;
+    }
+}
+let p1 new Person();
+console.log(p1.showName());
+console.log(Person.aaa());</code></pre><p>继承:</p>
+<pre><code>class Person{
+    constructor(name){
+        this.name=name;
+    }
+    showName(){
+        return `名字为:${this.name}`;
+    }
+}</code></pre><p>子类:</p>
+<pre><code>class Student extends Person{
+    constructor(name,skill){
+        super(name);
+        this.kill=skill;
+    }
+    showSkill(){
+        return
+    }
+}</code></pre><h2 id="十二-generator-函数"><a href="#十二-generator-函数" class="headerlink" title="十二. generator 函数"></a>十二. generator 函数</h2><blockquote>
+<p>作用: 解决异步,深度嵌套的问题</p>
+</blockquote>
+<pre><code>function *show(){
+    yield &apos; &apos;;
+}
+调用:
+show().next&apos;(); //{value:&apos;&apos;,done:false}</code></pre><p>当done的值为true时,表示完成,调用结束,上述调用为手动调用.</p>
+<p>可用for of 自动遍历, 但 return 的值不会遍历:</p>
+<pre><code>let g=show();
+for(let val of g){
+    console.log(val);
+}</code></pre><p>可解构赋值:</p>
+<pre><code>let [a,...b] = gen();
+console.log(...gen());//扩展运算符</code></pre><p>还可以:</p>
+<pre><code>Array.from();
+console.log(Array.from(gen()));</code></pre><h2 id="十三-Proxy代理-中间媒介"><a href="#十三-Proxy代理-中间媒介" class="headerlink" title="十三. Proxy代理(中间媒介)"></a>十三. Proxy代理(中间媒介)</h2><blockquote>
+<p>使用方式 : let p = new Proxy(target,handler) ; 其中的target为所需要拦截的对象 , handler为拦截对象后执行的操作 .  </p>
+</blockquote>
+<blockquote>
+<p>当拦截操作的对象为空时 , 未对拦截对象设定拦截方法 , 该情况下直接执行 target</p>
+</blockquote>
+<blockquote>
+<p>Proxy也可以作为其他对象的原型对象使用 , 读取到原型后 , 执行相应的拦截操作 . </p>
+</blockquote>
+<p>拦截的方法有三种 : </p>
+<blockquote>
+<p>(1) get(target,name,property) , 用于拦截某个读取原型的操作 , 第一个参数为目标对象 , 第二个参数为属性名称 , 第三个属性为操作时所针对的对象 .</p>
+</blockquote>
+<blockquote>
+<p>(2) set(target,name,value,property) , 用于拦截某个属性的赋值操作 , 第一个参数为目标对象 , 第二个参数为属性名称 , 第三个参数为属性值 , 第四个参数为操作行为所针对的对象(可选参数) . </p>
+</blockquote>
+<blockquote>
+<p>(3) has(target,key)用来拦截对象是否具有某个属性值的操作 , 第一个参数为目标对象 , 第二个参数为属性名 . </p>
+</blockquote>
+<p>以下是练习的demo :</p>
+<pre><code>// 1.target:要拦截的对象;handler:拦截对象后进行的操作
+let target ={
+    name:&apos;hah&apos;,
+    age:13
+}
+let handler={
+    get:(target,name)=&gt;{
+        return &quot;sucess&quot;
+    }
+}
+let pro= new Proxy(target,handler);
+
+console.log(pro.name);
+
+// 2.当handler没有相应的操作时,直接执行要被拦截的target对象
+let target={
+    name:&apos;hahaha&apos;,
+    age:12
+}
+let handler={};
+let pro = new Proxy(target,handler);
+console.log(pro.name);
+console.log(pro.age);
+
+// Proxy作为其他对象的原型对象使用
+let target={
+    name:&apos;hhh&apos;,
+    age:11
+}
+let handler={
+    get(target,name){
+        return &quot;success&quot;
+    }
+}
+let pro =new Proxy(target,handler);
+let a=Object.create(pro);
+console.log(a.name);
+
+// get(target,name,property)方法--用于拦截某个读取原型的操作
+let target={
+    grade:&apos;kkk&apos;,
+    age:22
+}
+let handler={
+    get:function(target,name,property){
+        if(name in target){
+            console.log(&apos;success&apos;);
+        }else{
+            console.log(&quot;error&quot;)
+        }
+        return Reflect.get(target,name,property);
+    }
+}
+let pro =new Proxy(target,handler);
+pro.grade;
+pro.age;
+
+// set(target,name,value,property)方法--用于拦截某个属性的赋值操作
+let target={
+    sex:&apos;女&apos;,
+    age:22
+}
+let handler={
+    set:function(target,name,value,property){
+        if(typeof value !=&apos;string&apos;){
+            console.log(&quot;error&quot;);
+        }else{
+            console.log(&quot;success&quot;);
+            return Reflect.set(target,name,value,property);
+        }
+    }
+}
+let pro =new Proxy(target,handler);
+pro.sex=&quot;男&quot;;
+pro.age=2;
+
+// has(target,key)方法--用于拦截对象是否具有某个属性值的操作
+let target={
+    name:&apos;aa&apos;,
+    age:11
+}
+let handler={
+    has:function(target,key){
+        if(key[0]!=&apos;n&apos;){
+            return false
+        }
+        return true
+    }
+}
+let pro = new Proxy(target,handler);
+console.log(&quot;name&quot; in pro);
+console.log(&quot;age&quot; in pro);</code></pre>
           
         
       

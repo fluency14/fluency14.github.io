@@ -87,7 +87,7 @@
 <meta property="og:description" content="一.定义变量之前的 var 作用域是全局,在函数内时是局部. 1.let :没有预解析,也就是没有变量提升;在代码块内,只要let定义变量,在定义前使用都会报错,所以必须先定义再使用不能重复定义,但可以赋值(在同一作用域内)for 循环中,循环体中是父级作用域,循环里又是一个作用域 2.const:const 定义变量不能修改const 定义完变量必须有值,不能后赋值 二.解构赋值let[a,b,">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/images/xunhuan.png">
-<meta property="og:updated_time" content="2019-07-15T01:50:49.180Z">
+<meta property="og:updated_time" content="2019-07-15T02:30:22.959Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ES6">
 <meta name="twitter:description" content="一.定义变量之前的 var 作用域是全局,在函数内时是局部. 1.let :没有预解析,也就是没有变量提升;在代码块内,只要let定义变量,在定义前使用都会报错,所以必须先定义再使用不能重复定义,但可以赋值(在同一作用域内)for 循环中,循环体中是父级作用域,循环里又是一个作用域 2.const:const 定义变量不能修改const 定义完变量必须有值,不能后赋值 二.解构赋值let[a,b,">
@@ -473,7 +473,207 @@ let json={
 <blockquote>
 <p>import 和 export 是对向外抛的值的引用,而 commonJS 是对值的拷贝.</p>
 </blockquote>
+<h2 id="十一-类和继承"><a href="#十一-类和继承" class="headerlink" title="十一. 类和继承"></a>十一. 类和继承</h2><h2 id="十一-类-class-和继承"><a href="#十一-类-class-和继承" class="headerlink" title="十一. 类(class)和继承"></a>十一. 类(class)和继承</h2><pre><code>1.
+class Person(){
+    constructor(name,age){//构造方法(函数),调用new时,自动执行
+        console.log(&apos;构造函数执行了,${name},${name},${age}&apos;);
+    }    
+}
+let p1 = new Person(&apos;name&apos;,18);
 
+2.
+class Person(){
+    constructor(name,age){
+        this.name=name;
+        this.age=age;
+    }
+    showName(){
+        return `名字为:${this.name}`;
+    }
+    showAge(){
+        return `年龄:${this.age}`;
+    }
+}
+let p1 = new Person(&apos;Bob&apos;,18);
+console.log(p1.showName(),p1.showAge());</code></pre><p>ES6中, class 没有提升功能 , 必须先定义后使用.</p>
+<blockquote>
+<p>取值 get    存值 set</p>
+</blockquote>
+<pre><code>class Person(){
+    constructor(){
+
+    }
+    get aaa(){
+        return &apos; &apos;;
+    }
+    set aaa(val){
+        console.log(`设置aaa的属性,值为:${val}`)
+    }
+}
+let p1 = new Person();
+p1.aaa=&apos;123&apos;;
+console.log(p1.aaa);</code></pre><blockquote>
+<p>类的方法:</p>
+</blockquote>
+<p>静态方法:</p>
+<pre><code>class Person(){
+    constructor(){
+
+    }
+    showName(){
+        return &apos;这是showName方法&apos;
+    }
+    static aaa(){
+        return &apos;这是静态方法&apos;;
+    }
+}
+let p1 new Person();
+console.log(p1.showName());
+console.log(Person.aaa());</code></pre><p>继承:</p>
+<pre><code>class Person{
+    constructor(name){
+        this.name=name;
+    }
+    showName(){
+        return `名字为:${this.name}`;
+    }
+}</code></pre><p>子类:</p>
+<pre><code>class Student extends Person{
+    constructor(name,skill){
+        super(name);
+        this.kill=skill;
+    }
+    showSkill(){
+        return
+    }
+}</code></pre><h2 id="十二-generator-函数"><a href="#十二-generator-函数" class="headerlink" title="十二. generator 函数"></a>十二. generator 函数</h2><blockquote>
+<p>作用: 解决异步,深度嵌套的问题</p>
+</blockquote>
+<pre><code>function *show(){
+    yield &apos; &apos;;
+}
+调用:
+show().next&apos;(); //{value:&apos;&apos;,done:false}</code></pre><p>当done的值为true时,表示完成,调用结束,上述调用为手动调用.</p>
+<p>可用for of 自动遍历, 但 return 的值不会遍历:</p>
+<pre><code>let g=show();
+for(let val of g){
+    console.log(val);
+}</code></pre><p>可解构赋值:</p>
+<pre><code>let [a,...b] = gen();
+console.log(...gen());//扩展运算符</code></pre><p>还可以:</p>
+<pre><code>Array.from();
+console.log(Array.from(gen()));</code></pre><h2 id="十三-Proxy代理-中间媒介"><a href="#十三-Proxy代理-中间媒介" class="headerlink" title="十三. Proxy代理(中间媒介)"></a>十三. Proxy代理(中间媒介)</h2><blockquote>
+<p>使用方式 : let p = new Proxy(target,handler) ; 其中的target为所需要拦截的对象 , handler为拦截对象后执行的操作 .  </p>
+</blockquote>
+<blockquote>
+<p>当拦截操作的对象为空时 , 未对拦截对象设定拦截方法 , 该情况下直接执行 target</p>
+</blockquote>
+<blockquote>
+<p>Proxy也可以作为其他对象的原型对象使用 , 读取到原型后 , 执行相应的拦截操作 . </p>
+</blockquote>
+<p>拦截的方法有三种 : </p>
+<blockquote>
+<p>(1) get(target,name,property) , 用于拦截某个读取原型的操作 , 第一个参数为目标对象 , 第二个参数为属性名称 , 第三个属性为操作时所针对的对象 .</p>
+</blockquote>
+<blockquote>
+<p>(2) set(target,name,value,property) , 用于拦截某个属性的赋值操作 , 第一个参数为目标对象 , 第二个参数为属性名称 , 第三个参数为属性值 , 第四个参数为操作行为所针对的对象(可选参数) . </p>
+</blockquote>
+<blockquote>
+<p>(3) has(target,key)用来拦截对象是否具有某个属性值的操作 , 第一个参数为目标对象 , 第二个参数为属性名 . </p>
+</blockquote>
+<p>以下是练习的demo :</p>
+<pre><code>// 1.target:要拦截的对象;handler:拦截对象后进行的操作
+let target ={
+    name:&apos;hah&apos;,
+    age:13
+}
+let handler={
+    get:(target,name)=&gt;{
+        return &quot;sucess&quot;
+    }
+}
+let pro= new Proxy(target,handler);
+
+console.log(pro.name);
+
+// 2.当handler没有相应的操作时,直接执行要被拦截的target对象
+let target={
+    name:&apos;hahaha&apos;,
+    age:12
+}
+let handler={};
+let pro = new Proxy(target,handler);
+console.log(pro.name);
+console.log(pro.age);
+
+// Proxy作为其他对象的原型对象使用
+let target={
+    name:&apos;hhh&apos;,
+    age:11
+}
+let handler={
+    get(target,name){
+        return &quot;success&quot;
+    }
+}
+let pro =new Proxy(target,handler);
+let a=Object.create(pro);
+console.log(a.name);
+
+// get(target,name,property)方法--用于拦截某个读取原型的操作
+let target={
+    grade:&apos;kkk&apos;,
+    age:22
+}
+let handler={
+    get:function(target,name,property){
+        if(name in target){
+            console.log(&apos;success&apos;);
+        }else{
+            console.log(&quot;error&quot;)
+        }
+        return Reflect.get(target,name,property);
+    }
+}
+let pro =new Proxy(target,handler);
+pro.grade;
+pro.age;
+
+// set(target,name,value,property)方法--用于拦截某个属性的赋值操作
+let target={
+    sex:&apos;女&apos;,
+    age:22
+}
+let handler={
+    set:function(target,name,value,property){
+        if(typeof value !=&apos;string&apos;){
+            console.log(&quot;error&quot;);
+        }else{
+            console.log(&quot;success&quot;);
+            return Reflect.set(target,name,value,property);
+        }
+    }
+}
+let pro =new Proxy(target,handler);
+pro.sex=&quot;男&quot;;
+pro.age=2;
+
+// has(target,key)方法--用于拦截对象是否具有某个属性值的操作
+let target={
+    name:&apos;aa&apos;,
+    age:11
+}
+let handler={
+    has:function(target,key){
+        if(key[0]!=&apos;n&apos;){
+            return false
+        }
+        return true
+    }
+}
+let pro = new Proxy(target,handler);
+console.log(&quot;name&quot; in pro);
+console.log(&quot;age&quot; in pro);</code></pre>
       
     </div>
     
@@ -619,7 +819,7 @@ let json={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-定义变量"><span class="nav-number">1.</span> <span class="nav-text">一.定义变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-let"><span class="nav-number">1.1.</span> <span class="nav-text">1.let :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-const"><span class="nav-number">1.2.</span> <span class="nav-text">2.const:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-解构赋值"><span class="nav-number">2.</span> <span class="nav-text">二.解构赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-字符串模板"><span class="nav-number">3.</span> <span class="nav-text">三.字符串模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-字符串操作"><span class="nav-number">3.1.</span> <span class="nav-text">2.字符串操作:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-函数"><span class="nav-number">4.</span> <span class="nav-text">四.函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-函数默认参数"><span class="nav-number">4.1.</span> <span class="nav-text">1.函数默认参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-函数参数默认已经定义了-不能再使用let-const声明"><span class="nav-number">4.2.</span> <span class="nav-text">2.函数参数默认已经定义了,不能再使用let,const声明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-扩展运算符"><span class="nav-number">5.</span> <span class="nav-text">五.扩展运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-箭头函数"><span class="nav-number">6.</span> <span class="nav-text">六.箭头函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#this指向"><span class="nav-number">6.1.</span> <span class="nav-text">this指向</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#箭头函数本来是没有this的-所以要去外层找this指向-也就是指向定义函数的对象—指向最外层"><span class="nav-number">6.1.0.1.</span> <span class="nav-text">箭头函数本来是没有this的,所以要去外层找this指向,也就是指向定义函数的对象—指向最外层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#箭头函数定义时-如果上一级是对象-则不能形成独立的作用域-所以this这时指向windows-例如"><span class="nav-number">6.1.0.2.</span> <span class="nav-text">箭头函数定义时,如果上一级是对象,则不能形成独立的作用域,所以this这时指向windows,例如:</span></a></li></ol></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#七-Promise"><span class="nav-number">7.</span> <span class="nav-text">七. Promise</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#事件循环"><span class="nav-number">7.0.0.1.</span> <span class="nav-text">事件循环</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八-数组新增特性"><span class="nav-number">8.</span> <span class="nav-text">八. 数组新增特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#九-对象简洁语法"><span class="nav-number">9.</span> <span class="nav-text">九. 对象简洁语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#十-模块化"><span class="nav-number">10.</span> <span class="nav-text">十. 模块化</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-定义变量"><span class="nav-number">1.</span> <span class="nav-text">一.定义变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-let"><span class="nav-number">1.1.</span> <span class="nav-text">1.let :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-const"><span class="nav-number">1.2.</span> <span class="nav-text">2.const:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-解构赋值"><span class="nav-number">2.</span> <span class="nav-text">二.解构赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-字符串模板"><span class="nav-number">3.</span> <span class="nav-text">三.字符串模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-字符串操作"><span class="nav-number">3.1.</span> <span class="nav-text">2.字符串操作:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-函数"><span class="nav-number">4.</span> <span class="nav-text">四.函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-函数默认参数"><span class="nav-number">4.1.</span> <span class="nav-text">1.函数默认参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-函数参数默认已经定义了-不能再使用let-const声明"><span class="nav-number">4.2.</span> <span class="nav-text">2.函数参数默认已经定义了,不能再使用let,const声明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-扩展运算符"><span class="nav-number">5.</span> <span class="nav-text">五.扩展运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-箭头函数"><span class="nav-number">6.</span> <span class="nav-text">六.箭头函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#this指向"><span class="nav-number">6.1.</span> <span class="nav-text">this指向</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#箭头函数本来是没有this的-所以要去外层找this指向-也就是指向定义函数的对象—指向最外层"><span class="nav-number">6.1.0.1.</span> <span class="nav-text">箭头函数本来是没有this的,所以要去外层找this指向,也就是指向定义函数的对象—指向最外层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#箭头函数定义时-如果上一级是对象-则不能形成独立的作用域-所以this这时指向windows-例如"><span class="nav-number">6.1.0.2.</span> <span class="nav-text">箭头函数定义时,如果上一级是对象,则不能形成独立的作用域,所以this这时指向windows,例如:</span></a></li></ol></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#七-Promise"><span class="nav-number">7.</span> <span class="nav-text">七. Promise</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#事件循环"><span class="nav-number">7.0.0.1.</span> <span class="nav-text">事件循环</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八-数组新增特性"><span class="nav-number">8.</span> <span class="nav-text">八. 数组新增特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#九-对象简洁语法"><span class="nav-number">9.</span> <span class="nav-text">九. 对象简洁语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#十-模块化"><span class="nav-number">10.</span> <span class="nav-text">十. 模块化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#十一-类和继承"><span class="nav-number">11.</span> <span class="nav-text">十一. 类和继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#十一-类-class-和继承"><span class="nav-number">12.</span> <span class="nav-text">十一. 类(class)和继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#十二-generator-函数"><span class="nav-number">13.</span> <span class="nav-text">十二. generator 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#十三-Proxy代理-中间媒介"><span class="nav-number">14.</span> <span class="nav-text">十三. Proxy代理(中间媒介)</span></a></li></div>
             
 
           </div>
